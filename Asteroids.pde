@@ -20,6 +20,8 @@ Asteroid asteroid;
 //create lasers array
 ArrayList<Laser> lasers = new ArrayList<Laser>();
 
+//Boolean to test if laser fired
+boolean laserFired = false;
 
 void setup() {
   ship = new Ship(width/2, height/2);
@@ -42,7 +44,12 @@ void setup() {
 
 void draw() {
   background(backImg);
-
+  
+  //limit laser rate of fire to once every 10 frames
+  if (laserFired == true && frameCount % 10 == 0) {
+    laserFired = false;
+  }
+  
   //lasers
   for (int i = lasers.size() - 1; i >=0; i--) {
     lasers.get(i).move();
@@ -84,10 +91,16 @@ void keyPressed() {
 
   //spacebar ascii code is 32
   if (keyCode == 32) {
-    //pew pew
-    shootSound.trigger();
-    //make new laser at ship position, heading in direction ship is facing
-    lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
+    //fire lasers if laser is not already fired
+    if(laserFired == false) {
+      //pew pew
+      shootSound.trigger();
+      //make new laser at ship position, heading in direction ship is facing
+      lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
+      
+      //set laser to fired
+      laserFired = true;
+    }
   }
 }
 
