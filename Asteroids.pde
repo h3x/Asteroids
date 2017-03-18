@@ -1,4 +1,17 @@
+/* creadits: Song used with permission from creator.
+             original content creator: FoxSynergy
+             http://opengameart.org/content/blue-space
+*/
+
+import ddf.minim.*;
+Minim minim;
+AudioPlayer mainTheme;
+AudioSample shootSound;
+
 float steering = 0.1;
+
+PImage backImg;
+
 
 //creat ship object
 Ship ship;
@@ -11,10 +24,22 @@ void setup() {
   ship = new Ship(width/2, height/2);
   ship.setScore(0); // initiallise score
   size(800, 800);
+  
+  
+  backImg = loadImage("bg5.jpg");
+  backImg.resize(height,width);
+  
+  minim = new Minim(this);
+  
+  mainTheme = minim.loadFile("BlueSpace.wav");
+  shootSound = minim.loadSample("laser_0.wav");
+  
+  mainTheme.play();
+
 }
 
 void draw() {
-  background(51);
+  background(backImg);
 
   //lasers
   for (int i = lasers.size() - 1; i >=0; i--) {
@@ -54,6 +79,8 @@ void keyPressed() {
 
   //spacebar ascii code is 32
   if (keyCode == 32) {
+    //pew pew
+    shootSound.trigger();
     //make new laser at ship position, heading in direction ship is facing
     lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
   }
