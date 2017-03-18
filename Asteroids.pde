@@ -1,4 +1,14 @@
+/* creadits: Song used with permission from creator.
+             original content creator: FoxSynergy
+             http://opengameart.org/content/blue-space
+*/
+
+import processing.sound.*;
+
 float steering = 0.1;
+
+PImage backImg;
+SoundFile mainTheme;
 
 //creat ship object
 Ship ship;
@@ -11,10 +21,17 @@ void setup() {
   ship = new Ship(width/2, height/2);
   ship.setScore(0); // initiallise score
   size(800, 800);
+  
+  
+  backImg = loadImage("bg5.jpg");
+  backImg.resize(height,width);
+  
+  mainTheme = new SoundFile(this, "BlueSpace.wav");
+  mainTheme.play();
 }
 
 void draw() {
-  background(51);
+  background(backImg);
 
   //lasers
   for (int i = lasers.size() - 1; i >=0; i--) {
