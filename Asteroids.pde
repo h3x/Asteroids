@@ -15,6 +15,7 @@ PImage backImg;
 
 //creat ship object
 Ship ship;
+Asteroid asteroid;
 
 //create lasers array
 ArrayList<Laser> lasers = new ArrayList<Laser>();
@@ -23,8 +24,9 @@ ArrayList<Laser> lasers = new ArrayList<Laser>();
 void setup() {
   ship = new Ship(width/2, height/2);
   ship.setScore(0); // initiallise score
-  size(800, 800);
+  size(700, 700);
   
+  asteroid = new Asteroid(30.0, 10, 50);
   
   backImg = loadImage("bg5.jpg");
   backImg.resize(height,width);
@@ -52,6 +54,9 @@ void draw() {
   ship.dispay();
   
   ship.displayScore();
+  
+  asteroid.update();
+  asteroid.display();
   
   //this is for testing to make sure the score is going to work.
   if( frameCount % 120 == 0){
