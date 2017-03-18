@@ -3,12 +3,15 @@
              http://opengameart.org/content/blue-space
 */
 
-import processing.sound.*;
+import ddf.minim.*;
+Minim minim;
+AudioPlayer mainTheme;
+AudioSample shootSound;
 
 float steering = 0.1;
 
 PImage backImg;
-SoundFile mainTheme;
+
 
 //creat ship object
 Ship ship;
@@ -26,8 +29,13 @@ void setup() {
   backImg = loadImage("bg5.jpg");
   backImg.resize(height,width);
   
-  mainTheme = new SoundFile(this, "BlueSpace.wav");
+  minim = new Minim(this);
+  
+  mainTheme = minim.loadFile("BlueSpace.wav");
+  shootSound = minim.loadSample("laser_0.wav");
+  
   mainTheme.play();
+
 }
 
 void draw() {
@@ -71,6 +79,8 @@ void keyPressed() {
 
   //spacebar ascii code is 32
   if (keyCode == 32) {
+    //pew pew
+    shootSound.trigger();
     //make new laser at ship position, heading in direction ship is facing
     lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
   }
