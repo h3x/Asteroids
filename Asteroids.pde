@@ -41,7 +41,7 @@ int startingRocks = 5;
 void setup() {
   rocks = new ArrayList<Rock>();
   lasers = new ArrayList<Laser>();
-  ship = new Ship(width/2, height/2);
+  ship = new Ship(width/2, height/2, rocks);
   ship.setScore(0); // initiallise score
   size(700, 700);
 
@@ -80,16 +80,18 @@ void draw() {
 
     ship.update();
     ship.dispay();
+    
+    
 
     ship.displayScore();
 
     for (int i = rocks.size() -1; i >= 0; i--) {
-      rocks.get(i).update();
+      //rocks.get(i).update();
 
       rocks.get(i).display();
       int isHit = rocks.get(i).hit();
       if (isHit >= 0) {
-
+        
         ship.setScore(40);
         if (isHit > 0) {
           addRocks(2, isHit - 1);
@@ -107,10 +109,6 @@ void draw() {
     highscore.displayScores();
   }
 
-  //this is for testing to make sure the score is going to work.
-  //if( frameCount % 120 == 0){
-  //  ship.setScore(40);
-  //}
 }
 
 void addRocks(int quant, int rLevel) {
@@ -126,11 +124,11 @@ void keyPressed() {
     ship.go(true);
   }
 
-  if (keyCode == LEFT && gameOver == false) {
+  if (keyCode == RIGHT && gameOver == false) {
     ship.steering(steering);
   }
 
-  if (keyCode == RIGHT && gameOver == false) {
+  if (keyCode == LEFT && gameOver == false) {
 
     ship.steering(steering * -1);
   }
@@ -157,6 +155,7 @@ void keyPressed() {
   //if 'n' key is pressed start a new game
   if (keyCode == 78 || keyCode == 110) {
     if(gameOver == true) {
+      minim.stop();
       setup();
     }
   }

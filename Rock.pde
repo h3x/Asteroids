@@ -51,11 +51,27 @@ class Rock {
   for (int i = lasers.size() - 1; i >=0; i--) {
     //if lasers and rocks collide...
     if (dist(lasers.get(i).getPos().x, lasers.get(i).getPos().y, location.x, location.y) < radius){
+      //kill the laser
+      lasers.remove(i);
+      
       //kill the rock
       return rockLevel;
     }
   }
   return -1;
+ }
+ 
+ PVector getPos(){
+  return location; 
+ }
+ 
+ float getRadius(){
+  //println(radius);
+  return radius; 
+ }
+ 
+ PVector getLocation(){
+  return location; 
  }
 
 }
