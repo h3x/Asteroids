@@ -16,6 +16,9 @@ PImage backImg;
 //creat ship object
 Ship ship;
 
+//create high score object
+HighScores highscore;
+
 //create an array list of rocks
 ArrayList<Rock> rocks = new ArrayList<Rock>();
 
@@ -25,11 +28,19 @@ ArrayList<Laser> lasers = new ArrayList<Laser>();
 //Boolean to test if laser fired
 boolean laserFired = false;
 
+//Boolean to test if game over
+boolean gameOver;
+
+//Test if high score added
+boolean highScoreAdded;
+
 //Rock level decides how many times rocks should split
 int rockLevel = 3;
 int startingRocks = 5;
 
 void setup() {
+  rocks = new ArrayList<Rock>();
+  lasers = new ArrayList<Laser>();
   ship = new Ship(width/2, height/2);
   ship.setScore(0); // initiallise score
   size(700, 700);
@@ -45,42 +56,55 @@ void setup() {
   shootSound = minim.loadSample("laser_0.wav");
 
   mainTheme.play();
+  
+  highscore = new HighScores();
+  highScoreAdded = false;
+  gameOver = false;
 }
 
 void draw() {
   background(backImg);
-
-  //limit laser rate of fire to once every 10 frames
-  if (laserFired == true && frameCount % 10 == 0) {
-    laserFired = false;
-  }
-
-  //lasers
-  for (int i = lasers.size() - 1; i >=0; i--) {
-    lasers.get(i).move();
-    lasers.get(i).display();
-  }
-
-
-  ship.update();
-  ship.dispay();
-
-  ship.displayScore();
-
-  for (int i = rocks.size() -1; i >= 0; i--) {
-    rocks.get(i).update();
-
-    rocks.get(i).display();
-    int isHit = rocks.get(i).hit();
-    if (isHit >= 0) {
-
-      ship.setScore(40);
-      if (isHit > 0) {
-        addRocks(2, isHit - 1);
-      }
-
-      rocks.remove(i);
+  
+  if (gameOver == false) {
+    //limit laser rate of fire to once every 10 frames
+    if (laserFired == true && frameCount % 10 == 0) {
+      laserFired = false;
     }
+
+    //lasers
+    for (int i = lasers.size() - 1; i >=0; i--) {
+      lasers.get(i).move();
+      lasers.get(i).display();
+    }
+
+
+    ship.update();
+    ship.dispay();
+
+    ship.displayScore();
+
+    for (int i = rocks.size() -1; i >= 0; i--) {
+      rocks.get(i).update();
+
+      rocks.get(i).display();
+      int isHit = rocks.get(i).hit();
+      if (isHit >= 0) {
+
+        ship.setScore(40);
+        if (isHit > 0) {
+          addRocks(2, isHit - 1);
+        }
+
+        rocks.remove(i);
+      }
+    }
+  }
+  else {
+    if(highScoreAdded == false) {
+      highscore.addScore((int)ship.getScore());
+      highScoreAdded = true;
+    }
+    highscore.displayScores();
   }
 
   //this is for testing to make sure the score is going to work.
@@ -98,21 +122,21 @@ void addRocks(int quant, int rLevel) {
 
 
 void keyPressed() {
-  if (keyCode == UP) {
+  if (keyCode == UP && gameOver == false) {
     ship.go(true);
   }
 
-  if (keyCode == LEFT) {
+  if (keyCode == LEFT && gameOver == false) {
     ship.steering(steering);
   }
 
-  if (keyCode == RIGHT) {
+  if (keyCode == RIGHT && gameOver == false) {
 
     ship.steering(steering * -1);
   }
 
   //spacebar ascii code is 32
-  if (keyCode == 32) {
+  if (keyCode == 32 && gameOver == false) {
     //fire lasers if laser is not already fired
     if (laserFired == false) {
       //pew pew
@@ -122,6 +146,18 @@ void keyPressed() {
 
       //set laser to fired
       laserFired = true;
+    }
+  }
+  
+  //if 'q' key is pressed to quit to high scores screen
+  if (keyCode == 81 || keyCode == 113) {
+    gameOver = true;  
+  }
+  
+  //if 'n' key is pressed start a new game
+  if (keyCode == 78 || keyCode == 110) {
+    if(gameOver == true) {
+      setup();
     }
   }
 }
