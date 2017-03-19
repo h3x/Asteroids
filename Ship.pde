@@ -101,7 +101,8 @@ class Ship {
     }
 
     //make it so!
-
+    //location.x = mouseX; //testing
+    //location.y = mouseY; //testing
     velocity.add(acceleration); 
     velocity.limit(60); //limits the velocity as to not be able to exceed light speed
     location.add(velocity);
@@ -171,7 +172,8 @@ class Ship {
 
     image(shipImg, 0, 0); 
     rectMode(CENTER); //testing
-    rect(0, 0, shipImg.width - 120, shipImg.height - 20); //testing
+    //rect(0, 0, shipImg.width - 120, shipImg.height - 20); //testing
+  // rect(0, 0, shipImg.width, shipImg.height); //testing
    
     //make the binking warp nacelles
     ellipse(-28, 0, 10, 10);    
@@ -208,14 +210,19 @@ class Ship {
     translate(location.x, location.y);
     rotate(getAngle());
     for (int i = rocks.size() - 1; i >= 0; i--) {
-      float d = location.dist(rocks.get(i).getPos());
+      //float d = location.dist(rocks.get(i).getPos());
       float r = rocks.get(i).getRadius();
-      PVector rockLoc = rocks.get(i).getLocation();
+      //PVector rockLoc = rocks.get(i).getLocation();
       
       
       //ship.location - rock.location < rock radius + ship width
       //TODO: this fucking thing!!!!!!!!!!!
-
+      
+      if(rocks.get(i).getPos().x + r < location.x + shipImg.width/2 && rocks.get(i).getPos().x - r > location.x - shipImg.width/2 && rocks.size() > 0){
+       if(rocks.get(i).getPos().y + r < location.y + shipImg.height/2 && rocks.get(i).getPos().y -r > location.y - shipImg.height/2){
+         println("hit" + frameCount); 
+      }
+      }
 
     }
     popMatrix();

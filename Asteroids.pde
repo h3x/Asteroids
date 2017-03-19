@@ -36,7 +36,7 @@ boolean highScoreAdded;
 
 //Rock level decides how many times rocks should split
 int rockLevel = 3;
-int startingRocks = 5;
+int startingRocks = 4;
 
 void setup() {
   rocks = new ArrayList<Rock>();
@@ -86,7 +86,7 @@ void draw() {
     ship.displayScore();
 
     for (int i = rocks.size() -1; i >= 0; i--) {
-      //rocks.get(i).update();
+      rocks.get(i).update();
 
       rocks.get(i).display();
       int isHit = rocks.get(i).hit();
