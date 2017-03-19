@@ -12,6 +12,8 @@ class Ship {
   
   int score;
   
+  PImage shipImg;
+  
   Ship(int x, int y) {
     // i think the variables in this constructor speak for themselvs
     location = new PVector(x, y);
@@ -28,6 +30,8 @@ class Ship {
     direction = PVector.fromAngle(angle - HALF_PI);
     
     score = 0;
+    
+    shipImg = loadImage("spaceship.png");
   }
 
   void dispay() {
@@ -149,7 +153,11 @@ class Ship {
     stroke(200);
     strokeWeight(1);
     fill(127);
-    triangle(0, -40, -40, 40, 40, 40);
+    //triangle(0, -40, -40, 40, 40, 40);
+    imageMode(CENTER);
+    shipImg.resize(200,200);
+    
+    image(shipImg,0,0);    
     popMatrix();
   }
   

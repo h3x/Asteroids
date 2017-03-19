@@ -1,0 +1,61 @@
+class Rock {
+    //barebones test class 
+  float radius;
+  int rockLevel;
+  PVector location;
+  PVector velocity;
+  ArrayList<Laser> lasers;
+  
+  
+  Rock(float radius, int x, int y, int rockLevel, ArrayList<Laser> lasers) {
+    this.radius = radius;
+    this.location = new PVector(x, y);
+    this.rockLevel = rockLevel;
+    this.lasers = lasers;
+    
+    float tempX = random(-rockLevel,rockLevel);
+    float tempY = random(-rockLevel,rockLevel);
+    
+    velocity  = new PVector(tempX,tempY);
+  }
+  
+  //this is the asteroid make function. can be replaced with other shapes as required
+  void make(){
+    ellipse(location.x, location.y, radius * 2, radius * 2);
+    
+  }
+  void display(){
+    make();  // draw our asteroid
+  }
+  
+  void update(){
+
+    if (location.x > width + radius) {
+      location.x = -radius;
+    }
+    if (location.x < -radius) {
+      location.x = width + radius;
+    }
+    if (location.y > height + radius) {
+      location.y = -radius;
+    }
+    if (location.y <  -radius) {
+      location.y = height + radius;
+    }
+    
+  location.add(velocity);
+  }
+  
+ int hit(){
+   // collision detection for the lasers. vs rocks
+  for (int i = lasers.size() - 1; i >=0; i--) {
+    //if lasers and rocks collide...
+    if (dist(lasers.get(i).getPos().x, lasers.get(i).getPos().y, location.x, location.y) < radius){
+      //kill the rock
+      return rockLevel;
+    }
+  }
+  return -1;
+ }
+
+}
