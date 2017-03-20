@@ -157,13 +157,13 @@ class Ship {
     pushMatrix();
     stroke(200);
     strokeWeight(1);
-    crash();
+    
     //controls blink speed of the warp nacelles
     if (frameCount % 4 == 0) {
       col = map(sin(frameCount), -1, 1, 0, 127);
     }
     noStroke();
-    fill(200, 0, 0, col);
+    
     //triangle(0, -40, -40, 40, 40, 40);
     imageMode(CENTER);
 
@@ -171,11 +171,16 @@ class Ship {
 
 
     image(shipImg, 0, 0); 
-    rectMode(CENTER); //testing
+    fill(255,0,0);
+    //rectMode(CENTER); //testing
     //rect(0, 0, shipImg.width - 120, shipImg.height - 20); //testing
   // rect(0, 0, shipImg.width, shipImg.height); //testing
+
    
+  
+    
     //make the binking warp nacelles
+    fill(200, 0, 0, col);
     ellipse(-28, 0, 10, 10);    
     ellipse(28, 0, 10, 10);
     popMatrix();
@@ -206,25 +211,30 @@ class Ship {
   }
 
   void crash() {
-    pushMatrix();
-    translate(location.x, location.y);
-    rotate(getAngle());
-    for (int i = rocks.size() - 1; i >= 0; i--) {
-      //float d = location.dist(rocks.get(i).getPos());
-      float r = rocks.get(i).getRadius();
-      //PVector rockLoc = rocks.get(i).getLocation();
-      
-      
-      //ship.location - rock.location < rock radius + ship width
-      //TODO: this fucking thing!!!!!!!!!!!
-      
-      if(rocks.get(i).getPos().x + r < location.x + shipImg.width/2 && rocks.get(i).getPos().x - r > location.x - shipImg.width/2 && rocks.size() > 0){
-       if(rocks.get(i).getPos().y + r < location.y + shipImg.height/2 && rocks.get(i).getPos().y -r > location.y - shipImg.height/2){
-         println("hit" + frameCount); 
+   //stroke(255);
+   //strokeWeight(4);
+   
+   pushMatrix();
+   translate(location.x, location.y);
+   rotate(angle);
+   //point(20 ,40 ); //bottom right
+   //point(-20, 40); //bottom left
+   //point(20, - 40); //top right
+   //point(-20, -40); //top left
+   
+   for(int i = rocks.size() -1; i >= 0; i--){
+    PVector rockPos = rocks.get(i).getPos();
+    float rockRad = rocks.get(i).getRadius();
+    
+    if(rockPos.x + rockRad >= -20 && rockPos.x - rockRad <= 20){
+      if(rockPos.y + rockRad >= -40 && rockPos.y - rockRad <= 40){
+       println("hit!! "+ frameCount); 
       }
+      
       }
-
-    }
-    popMatrix();
+    
+   }
+   
+   popMatrix();
   }
 }
