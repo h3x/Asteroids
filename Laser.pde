@@ -11,6 +11,9 @@ class Laser {
   }
 
   void display() {
+    fill(30,127,30, 60);
+    noStroke();
+    ellipse(position.x, position.y, 20,20);
     stroke(255);
     strokeWeight(4);
     point(position.x, position.y);
