@@ -10,6 +10,10 @@ class Ship {
   float angle;
   float steeringSpeed;
   
+  int score;
+  
+  PImage shipImg;
+  
   Ship(int x, int y) {
     // i think the variables in this constructor speak for themselvs
     location = new PVector(x, y);
@@ -25,6 +29,9 @@ class Ship {
     
     direction = PVector.fromAngle(angle - HALF_PI);
     
+    score = 0;
+    
+    shipImg = loadImage("spaceship.png");
   }
 
   void dispay() {
@@ -43,6 +50,11 @@ class Ship {
     scale(scaleFactor);
     make();  // draw our ship
     popMatrix();
+  }
+  
+  void displayScore(){
+    textSize(32);
+    text(score, 20, 40);
   }
 
   void update() {
@@ -141,7 +153,11 @@ class Ship {
     stroke(200);
     strokeWeight(1);
     fill(127);
-    triangle(0, -40, -40, 40, 40, 40);
+    //triangle(0, -40, -40, 40, 40, 40);
+    imageMode(CENTER);
+    shipImg.resize(200,200);
+    
+    image(shipImg,0,0);    
     popMatrix();
   }
   
@@ -161,4 +177,12 @@ class Ship {
    direction = PVector.fromAngle(angle - HALF_PI); 
   }
   
+  float getScore(){
+     return score; 
+  }
+  
+  void setScore(int points){
+    score = score + points;
+   
+  }
 }
