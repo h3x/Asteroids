@@ -4,6 +4,8 @@ adam2
 440
 asd
 280
+adam
+200
 asf
 120
 adam
@@ -16,5 +18,3 @@ adam2
 80
 adam j
 80
-<empty>
-0

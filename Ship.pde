@@ -188,6 +188,7 @@ class Ship {
     float tempX = -100;
     float tempY = -100;
     
+
     for (int i = rocks.size() -1; i >= 0; i--) {
       PVector rockPos = rocks.get(i).getPos();
       float rockRad = rocks.get(i).getRadius();
@@ -207,6 +208,7 @@ class Ship {
         tempY = location.y-40;
       } else {
         tempY = location.y + 40;
+
       }
       float d = sqrt(sq(tempX - rockPos.x) + sq(tempY - rockPos.y));
       if (d < rockRad) {
