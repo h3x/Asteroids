@@ -10,11 +10,11 @@ adam
 80
 n
 80
-<empty>
-0
-<empty>
-0
-<empty>
-0
+adam
+80
+adam2
+80
+adam j
+80
 <empty>
 0

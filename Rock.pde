@@ -21,9 +21,7 @@ class Rock {
   
   //this is the asteroid make function. can be replaced with other shapes as required
   void make(){
-    
-    fill(0,255,0,-1);
-    ellipse(location.x, location.y, radius * 2, radius * 2);
+
     
     fill(100);
     ellipse(location.x, location.y, radius * 2, radius * 2);

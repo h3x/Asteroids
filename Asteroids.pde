@@ -36,7 +36,7 @@ boolean highScoreAdded;
 
 //Rock level decides how many times rocks should split
 int rockLevel = 3;
-int startingRocks = 2;
+int startingRocks = 5;
 
 void setup() {
   rocks = new ArrayList<Rock>();
@@ -80,7 +80,11 @@ void draw() {
 
     ship.update();
     ship.dispay();
-    ship.crash();
+    if(frameCount > 240){
+      if(ship.crash()){
+        gameOver = true;
+      }
+    }
     
     
 
