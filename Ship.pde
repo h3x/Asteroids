@@ -228,7 +228,7 @@ class Ship {
     
     if(rockPos.x + rockRad >= -20 && rockPos.x - rockRad <= 20){
       if(rockPos.y + rockRad >= -40 && rockPos.y - rockRad <= 40){
-       println("hit!! "+ frameCount); 
+       println("hit!! "+ frameCount0); 
       }
       
       }
