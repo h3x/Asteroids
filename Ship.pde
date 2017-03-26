@@ -12,6 +12,7 @@ class Ship {
   float col;
 
   int score;
+  int damage;
 
   PImage shipImg;
 
@@ -35,6 +36,7 @@ class Ship {
     direction = PVector.fromAngle(angle - HALF_PI);
 
     score = 0;
+    damage = 0;
 
     shipImg = loadImage("spaceship.png");
   }
@@ -61,6 +63,12 @@ class Ship {
     textSize(32);
     fill(127);
     text(score, 20, 40);
+  }
+  
+  void displayDamage() {
+    textSize(32);
+    fill(127);
+    text("Damage: " + damage + "%", 200, 40);
   }
 
   void update() {
@@ -170,9 +178,18 @@ class Ship {
   float getScore() {
     return score;
   }
+  
+  int getDamage()
+  {
+    return damage;
+  }
 
   void setScore(int points) {
     score = score + points;
+  }
+  
+  void addDamage(int dam) {
+    damage += dam;  
   }
 
   boolean crash() {
