@@ -22,6 +22,9 @@ Score score = new Score();
 //create high score object
 HighScores highscore;
 
+//bool test for background music
+boolean music = false;
+
 //Create Levels object
 Levels levels = new Levels();
 
@@ -77,7 +80,10 @@ void setup() {
   mainTheme = minim.loadFile("BlueSpace.wav");
   shootSound = minim.loadSample("laser_0.wav");
 
-  mainTheme.play();
+  if(!music){
+    mainTheme.play();
+    music = true;
+  }
   
   highscore = new HighScores();
   highScoreAdded = false;
@@ -198,6 +204,7 @@ void keyPressed() {
   if (keyCode == 78 || keyCode == 110) {
     if(gameOver == true) {
       minim.stop();
+      music = false;
       setup();
     }
   }
