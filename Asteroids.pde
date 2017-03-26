@@ -16,8 +16,14 @@ PImage backImg;
 //creat ship object
 Ship ship;
 
+//Create score object
+Score score = new Score();
+
 //create high score object
 HighScores highscore;
+
+//Create Levels object
+Levels levels = new Levels();
 
 //create an array list of rocks
 ArrayList<Rock> rocks = new ArrayList<Rock>();
@@ -31,21 +37,37 @@ boolean laserFired = false;
 //Boolean to test if game over
 boolean gameOver;
 
+//Boolean to test if level over
+boolean levelOver;
+
 //Test if high score added
 boolean highScoreAdded;
 
+//Make ship un-damageable for a few seconds
+int undamageable = 0;
+
 //Rock level decides how many times rocks should split
 int rockLevel = 3;
-int startingRocks = 5;
+int startingRocks = 2;
 
-void setup() {
+int totalRocks;
+
+void setup() {    
   rocks = new ArrayList<Rock>();
   lasers = new ArrayList<Laser>();
   ship = new Ship(width/2, height/2, rocks);
-  ship.setScore(0); // initiallise score
+    
+  if(gameOver == true) {
+    score.setScore(0); // initiallise score
+    levels.resetLevels(); // go back to level 1
+  }
+  
+  //Calculate the total number of rocks to be destroyed in the level
+  totalRocks = (startingRocks + levels.getLevel() - 1) + (((startingRocks + levels.getLevel() - 1)) * 7);
+  
   size(700, 700);
 
-  addRocks(startingRocks, rockLevel);
+  addRocks((startingRocks - 1) + levels.getLevel(), rockLevel);
 
   backImg = loadImage("bg5.jpg");
   backImg.resize(height, width);
@@ -60,6 +82,7 @@ void setup() {
   highscore = new HighScores();
   highScoreAdded = false;
   gameOver = false;
+  levelOver = false;
 }
 
 void draw() {
@@ -82,13 +105,27 @@ void draw() {
     ship.dispay();
     if(frameCount > 240){
       if(ship.crash()){
-        gameOver = true;
+        if(undamageable + 100 < frameCount) {
+          ship.addDamage(20);
+          
+          //Make ship un-damageable for a few seconds
+          undamageable = frameCount;
+        }
+        if(ship.getDamage() == 100) {
+          gameOver = true;  
+        }
       }
     }
-    
-    
 
-    ship.displayScore();
+    //Go to next level if all rocks destroyed
+    if(rocks.size() >= totalRocks) {
+      levels.nextLevel(); //Go to next level
+      setup();
+    }
+
+    ship.displayDamage();
+    score.displayScore();
+    levels.displayLevel();
 
     for (int i = rocks.size() -1; i >= 0; i--) {
       rocks.get(i).update();
@@ -97,7 +134,7 @@ void draw() {
       int isHit = rocks.get(i).hit();
       if (isHit >= 0) {
         
-        ship.setScore(40);
+        score.addScore(40);
         if (isHit > 0) {
           addRocks(2, isHit - 1);
         }
@@ -108,7 +145,7 @@ void draw() {
   }
   else {
     if(highScoreAdded == false) {
-      highscore.addScore((int)ship.getScore());
+      highscore.addScore(score.getScore());
       highScoreAdded = true;
     }
     highscore.displayScores();
