@@ -50,7 +50,7 @@ boolean highScoreAdded;
 int undamageable = 0;
 
 //Rock level decides how many times rocks should split
-int rockLevel = 3;
+int rockLevel = 4;
 int startingRocks = 2;
 
 int totalRocks;
@@ -93,7 +93,7 @@ void setup() {
 
 void draw() {
   background(backImg);
-  
+  println(rocks.size());
   if (gameOver == false) {
     //limit laser rate of fire to once every 10 frames
     if (laserFired == true && frameCount % 10 == 0) {
@@ -124,7 +124,7 @@ void draw() {
     }
 
     //Go to next level if all rocks destroyed
-    if(rocks.size() >= totalRocks) {
+    if(rocks.size() <= 0) {
       levels.nextLevel(); //Go to next level
       setup();
     }
@@ -137,11 +137,13 @@ void draw() {
       rocks.get(i).update();
 
       rocks.get(i).display();
+      
+      //is hit servers as a test var, if the rock is hit it will return a +ve number (or 0), and if the rock has not been hit by a laser, it will return -1
+      //it returns the level of the rock to be used in the next generation of rock creation
       int isHit = rocks.get(i).hit();
       if (isHit >= 0) {
-        
         score.addScore(40);
-        if (isHit > 0) {
+        if (isHit > 1) { //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
           addRocks(2, isHit - 1);
         }
 
@@ -163,6 +165,7 @@ void addRocks(int quant, int rLevel) {
 
   for (int i = 0; i < quant; i++) {
     rocks.add(new Rock(rLevel * 12, (int)random(width), (int)random(height), rLevel, lasers));
+    println("new rock");
   }
 }
 

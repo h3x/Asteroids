@@ -5,6 +5,10 @@ ada
 adam
 960
 adam
+640
+ada,m
+520
+adam
 480
 adam2
 440
@@ -14,7 +18,3 @@ adam
 200
   ADAM,
 160
- adam
-160
-asf
-120
