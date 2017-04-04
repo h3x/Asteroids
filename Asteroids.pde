@@ -1,12 +1,23 @@
-/* creadits: Song used with permission from creator.
+ /* creadits: 
+ 
+ Song used with permission from creator.
  original content creator: FoxSynergy
  http://opengameart.org/content/blue-space
+ 
+ Foom sound (Asteroid explosions) used with permission
+ original content creator: Unknown
+ http://opengameart.org/content/spell-4-fire
+ 
  */
 
 import ddf.minim.*;
 Minim minim;
 AudioPlayer mainTheme;
 AudioSample shootSound;
+AudioSample foomSound;
+AudioSample newLevel;
+
+
 
 float steering = 0.1;
 
@@ -78,8 +89,10 @@ void setup() {
   minim = new Minim(this);
 
   mainTheme = minim.loadFile("BlueSpace.wav");
-  shootSound = minim.loadSample("laser_0.wav");
-
+  shootSound = minim.loadSample("laser_1.wav");
+  foomSound = minim.loadSample("foom_1.wav");
+  newLevel =  minim.loadSample("newLevel.wav");  
+  
   if(!music){
     mainTheme.play();
     music = true;
@@ -93,7 +106,7 @@ void setup() {
 
 void draw() {
   background(backImg);
-  println(rocks.size());
+  //println(rocks.size());
   if (gameOver == false) {
     //limit laser rate of fire to once every 10 frames
     if (laserFired == true && frameCount % 10 == 0) {
@@ -126,6 +139,7 @@ void draw() {
     //Go to next level if all rocks destroyed
     if(rocks.size() <= 0) {
       levels.nextLevel(); //Go to next level
+      newLevel.trigger();
       setup();
     }
 
@@ -143,8 +157,9 @@ void draw() {
       int isHit = rocks.get(i).hit();
       if (isHit >= 0) {
         score.addScore(40);
+        foomSound.trigger();
         if (isHit > 1) { //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
-          addRocks(2, isHit - 1);
+          addRocks(2, isHit - 1, rocks.get(i).getPos());
         }
 
         rocks.remove(i);
@@ -165,7 +180,14 @@ void addRocks(int quant, int rLevel) {
 
   for (int i = 0; i < quant; i++) {
     rocks.add(new Rock(rLevel * 12, (int)random(width), (int)random(height), rLevel, lasers));
-    println("new rock");
+    //println("new rock");
+  }
+}
+void addRocks(int quant, int rLevel, PVector deadPos) {
+
+  for (int i = 0; i < quant; i++) {
+    rocks.add(new Rock(rLevel * 12, (int)deadPos.x, (int)deadPos.y, rLevel, lasers ));
+    //println("new rock");
   }
 }
 
