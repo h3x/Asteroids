@@ -6,6 +6,7 @@ class Ship {
 
   boolean goingUp;
   boolean rotating;
+  boolean hitRock = false;
 
   float angle;
   float steeringSpeed;
@@ -13,6 +14,7 @@ class Ship {
 
   int score;
   int damage;
+  int undamageable = 0;
 
   PImage shipImg;
 
@@ -229,6 +231,27 @@ class Ship {
       }
       float d = sqrt(sq(tempX - rockPos.x) + sq(tempY - rockPos.y));
       if (d < rockRad) {
+        
+        //Destroy rocks if ship hits them
+        if(hitRock == false)
+        {
+          addDamage(20);
+          foomSound.trigger();
+          if (rocks.get(i).getRockLevel() > 1) { //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
+            addRocks(2, rocks.get(i).getRockLevel() - 1, rocks.get(i).getPos());
+          }
+          rocks.remove(i);
+          
+          undamageable = frameCount;
+          hitRock = true;
+        }
+        
+        //Make ship un-damageable momentarily after a rock is hit
+        if(frameCount > undamageable + 100)
+        {
+          hitRock = false;
+        }
+        
         return true;
       }
     }
