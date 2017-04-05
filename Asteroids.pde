@@ -11,7 +11,7 @@
  */
 
 import ddf.minim.*;
-Minim minim;
+Minim minim = new Minim(this);
 AudioPlayer mainTheme;
 AudioSample shootSound;
 AudioSample foomSound;
@@ -86,7 +86,7 @@ void setup() {
   backImg = loadImage("bg5.jpg");
   backImg.resize(height, width);
 
-  minim = new Minim(this);
+
 
   mainTheme = minim.loadFile("BlueSpace.wav");
   shootSound = minim.loadSample("laser_1.wav");
@@ -94,7 +94,7 @@ void setup() {
   newLevel =  minim.loadSample("newLevel.wav");  
   
   if(!music){
-    mainTheme.play();
+    mainTheme.loop();
     music = true;
   }
   
@@ -121,18 +121,11 @@ void draw() {
 
 
     ship.update();
-    ship.dispay();
-    if(frameCount > 240){
-      if(ship.crash()){
-        if(undamageable + 100 < frameCount) {
-          ship.addDamage(20);
-          
-          //Make ship un-damageable for a few seconds
-          undamageable = frameCount;
-        }
-        if(ship.getDamage() == 100) {
+    
+    //Check if ship has crashed and if game is over
+    if(ship.crash()){
+      if(ship.getDamage() == 100) {
           gameOver = true;  
-        }
       }
     }
 
@@ -142,10 +135,6 @@ void draw() {
       newLevel.trigger();
       setup();
     }
-
-    ship.displayDamage();
-    score.displayScore();
-    levels.displayLevel();
 
     for (int i = rocks.size() -1; i >= 0; i--) {
       rocks.get(i).update();
@@ -165,6 +154,11 @@ void draw() {
         rocks.remove(i);
       }
     }
+    
+    ship.dispay();
+    ship.displayDamage();
+    score.displayScore();
+    levels.displayLevel();
   }
   else {
     if(highScoreAdded == false) {
