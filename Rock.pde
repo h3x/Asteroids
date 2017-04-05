@@ -88,7 +88,7 @@ class Rock {
     return radius;
   }
 
-  PVector getLocation() {
-    return location;
+  int getRockLevel() {
+    return rockLevel;
   }
 }

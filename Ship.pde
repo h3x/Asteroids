@@ -254,12 +254,15 @@ class Ship {
         
         return true;
       }
+      
+    //LEAVE THIS HERE FOR THE VIDEO 
+    //fill(255,0,0);
+    //stroke(255, 0, 0);
+    //ellipse(tempX, tempY, 10, 10); 
     }
 
   
-    //noFill();
-    //stroke(255, 0, 0);
-    //ellipse(tempX, tempY, 100, 100); 
+
     return  false;
   }
 }
