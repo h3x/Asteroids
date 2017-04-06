@@ -1,5 +1,5 @@
 class Rock {
-  //barebones test class 
+  
   float radius;
   int rockLevel;
   PVector location;

@@ -1,6 +1,6 @@
-# Assignment 1 - Asteroids! 
+# Assignment 1 - Asteroids!
 
-##Aims
+## Aims
 
 * Conduct a collaborative software development project.
 * Solve problems and design software solutions using a high-level programming language and a range of technologies, protocols and algorithms.
@@ -9,11 +9,11 @@
 
 ## Description
 
-The video game *Asteroids* is an arcade classic that was originally developed in 1979 and played on arcade gaming machines. Over years there have been many re-makes of this game with many upgrades to the graphics and features on more sophisticated machines. 
+The video game *Asteroids* is an arcade classic that was originally developed in 1979 and played on arcade gaming machines. Over years there have been many re-makes of this game with many upgrades to the graphics and features on more sophisticated machines.
 
 The concept for the game is simple - there is a small ship that the player can move around the screen that can fire projectiles. Asteroids, represented by some sort of random polygon shape, drift around the screen. The aim of the game is to destroy the asteroids with the projectiles that the ships fires. This may not be so easy because when large asteroids are hit with the ships projectiles, they break into smaller asteroids that fly off in random directions. If the any of the asteroids hit the ship, it is destroyed.
 
-The gameplay for the original can be seen [here](https://www.youtube.com/watch?v=WYSupJ5r2zo) 
+The gameplay for the original can be seen [here](https://www.youtube.com/watch?v=WYSupJ5r2zo)
 
 
 ## Task
@@ -42,7 +42,7 @@ This part of your assignment is broken into three tasks:
 
 1. Create an Overview video of your implementation
 2. Critique 3 other groups overview videos and provide a text-based response.
-3. Respond to the critique of your implementation. 
+3. Respond to the critique of your implementation.
 
 ### Create an Overview video
 
@@ -51,7 +51,7 @@ Along with the submission of your code, your group will also need to record a sh
 Don't include this video in your in the zip file of your submission - Upload your video to one of two cloud video providers:
 
 * YouTube (recommended). You can make your video "unlisted" but not "private"
-* UNE's Kaltura video system. In Moodle, go to Moodle Home → My Media 
+* UNE's Kaltura video system. In Moodle, go to Moodle Home → My Media
 
 Copy the URL of your video, and paste it into the *Overview Video* task.
 
@@ -96,7 +96,7 @@ Components in this section include:
 
 * Solution Correctness:
     * Are all of the basic components implemented?
-    * Is there any "buggy" behaviour? 
+    * Is there any "buggy" behaviour?
 
 * Quality of Solution:
     * Is your code broken down into functions (e.g. not more than about 60 lines - excluding braces, comments and whitespace)
@@ -107,7 +107,7 @@ Components in this section include:
 * Coding style:
     * Is your indentation consistent?
     * Have blank lines been used so that the code is easy to read?
-    * Are any lines longer than 80 characters (i.e. off the end of the screen)? 
+    * Are any lines longer than 80 characters (i.e. off the end of the screen)?
     * Are capitalisation and naming conventions consistent?
 
 * Internal Documentation:
@@ -115,7 +115,7 @@ Components in this section include:
     * Are variables and functions named in a meaningful way?
     * Are any obscure sections fully explained?
     * Do your function have a header block that explains the purpose, its arguments and return value?
-    
+
 
 **Video Review - 15%**
 
@@ -129,6 +129,3 @@ Components in this section include:
 **Critique of One other groups video - 5%**
 
 * Was your video useful/helpful for the other groups?
-  
-
-
