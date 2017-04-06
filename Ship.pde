@@ -2,14 +2,26 @@
  * Class:     Laser
  *
  * Authors:   Adam Austin
+ *            Scott Nicol
  *
  * Function:  Creates and controls ship (player) object
  *             
  * Imports:   None
  *
- * Methods:   display() - Draws the laser
- *            move()    - Draws the laser in the new location
- *            getPos()  - Getter - returns the position of the laser
+ * Methods:   display()       - Draws the laser
+ *            displayScore()  - Displays the curent score on the screen
+ *            displayDamage() - Displays the current damage to the ship on the screen
+ *            update()        - Update the position of the ship object
+ *            go()            - Sets the goingUp boolean depending on the state of the UP arrow key press state
+ *            steering()      - Sets the rotation depending on the state of the LEFT/RIGHT arrow key press state
+ *            make()          - Used to build the ship object for on-screen display.
+ *            crash()         - Collision detection for asteroid vs rock collisions
+ *            getPos()        - Getter - returns the position of the ship
+ *            getAngle()      - Getter - returns the heading of the ship in radians to any calling function or class
+ *            getScore()      - Getter - returns the current score
+ *            getDamage()     - Getter - returns the current damage incurred to the ship
+ *            setScore()      - Setter - sets the score
+ *            addDamage()     - Setter - adds new damage to existing damage
  *
  ************************************************************************************************************/
 
@@ -35,6 +47,20 @@ class Ship {
 
   ArrayList<Rock> rocks;
 
+  /***********************************************************************************************************
+   * Method:     Constructor
+   *
+   * Authors:    Adam Austin
+   *             
+   *
+   * Function:   Create a new ship object
+   *             
+   * Parameters: x          - the initial x position of the ship
+   *             y          - The initial y position of the ship
+   *             rocks      - a reference to the rocks ArrayList, used for collision detection
+   *
+   ************************************************************************************************************/
+
   Ship(int x, int y, ArrayList<Rock> rocks) {
     // i think the variables in this constructor speak for themselvs
     location = new PVector(x, y);
@@ -42,7 +68,6 @@ class Ship {
     acceleration = new PVector(0, 0);
 
     this.rocks = rocks;
-
 
     goingUp = false;
     rotating = false;
@@ -58,15 +83,33 @@ class Ship {
     shipImg = loadImage("spaceship.png");
   }
 
+
+  /***********************************************************************************************************
+   * Method:     display()
+   *
+   * Authors:    Adam Austin
+   *
+   * Function:   
+   *             
+   * Parameters: None
+   *
+   * Returns:    None
+   *
+   * Notes:      push and pop matrix functions are necassary due to translating the object around the screen.
+   *             the image is always drawn at (0,0), and is the translate to the x and y position that really controls
+   *             the moving around of the object. Without push and pop, all other translations occur _relative_ to each other
+   *             creating a hot, sticky mess. Same goes for the rotation method.
+   * 
+   ************************************************************************************************************/
+
   void dispay() {
 
 
-    //TODO: scaleFactor will be used to scale the ship according to window size
-    // will be moved to the constructor at a later stage when class testing is complete    
+    // scaleFactor is used to scale the ship according to window size and png image size
+
     float scaleFactor = 0.5;
 
     //push and pop seperate the translate and rotate functions from the rest of the program
-    //needed!! do not delete these!
 
     pushMatrix();
     translate(location.x, location.y);
@@ -81,7 +124,7 @@ class Ship {
     fill(127);
     text(score, 20, 40);
   }
-  
+
   void displayDamage() {
     textSize(32);
     fill(127);
@@ -90,7 +133,7 @@ class Ship {
 
   void update() {
     // this is just the screen wrap around effect.
-    
+
     if (location.x > width) {
       location.x = 0;
     }
@@ -128,8 +171,6 @@ class Ship {
     velocity.add(acceleration); 
     velocity.limit(60); //limits the velocity as to not be able to exceed light speed
     location.add(velocity);
-    //location.x = mouseX;
-    //location.y = mouseY;
   }
 
   //called if the up key is pressed or released
@@ -150,7 +191,7 @@ class Ship {
 
   //draws the ship, can be replaced later without disrupting any other functions
   void make() {
-    
+
     stroke(200);
     strokeWeight(1);
 
@@ -173,47 +214,14 @@ class Ship {
     fill(200, 0, 0, col);
     ellipse(-28, 0, 10, 10);    
     ellipse(28, 0, 10, 10);
-
-  }
-
-  //returns the position of the ship to any calling function or class
-  PVector getPos() {
-    return location;
-  }
-
-  //returns the heading of the ship in radians to any calling function or class
-  float getAngle() {
-    return angle - HALF_PI;
-  }
-
-  //sets the direction PVector variable depending on which way the shipo is currently heading.
-  //direction is used in other places in this class and when creating the Laser objects
-  void setDirection() {
-    direction = PVector.fromAngle(angle - HALF_PI);
-  }
-
-  float getScore() {
-    return score;
   }
   
-  int getDamage()
-  {
-    return damage;
-  }
-
-  void setScore(int points) {
-    score = score + points;
-  }
   
-  void addDamage(int dam) {
-    damage += dam;  
-  }
-
   boolean crash() {
 
     float tempX = -100;
     float tempY = -100;
-    
+
 
     for (int i = rocks.size() -1; i >= 0; i--) {
       PVector rockPos = rocks.get(i).getPos();
@@ -234,13 +242,12 @@ class Ship {
         tempY = location.y-40;
       } else {
         tempY = location.y + 40;
-
       }
       float d = sqrt(sq(tempX - rockPos.x) + sq(tempY - rockPos.y));
       if (d < rockRad) {
-        
+
         //Destroy rocks if ship hits them
-        if(hitRock == false)
+        if (hitRock == false)
         {
           addDamage(20);
           foomSound.trigger();
@@ -248,21 +255,53 @@ class Ship {
             addRocks(2, rocks.get(i).getRockLevel() - 1, rocks.get(i).getPos());
           }
           rocks.remove(i);
-          
+
           undamageable = frameCount;
           hitRock = true;
         }
-        
+
         //Make ship un-damageable momentarily after a rock is hit
-        if(frameCount > undamageable + 100)
+        if (frameCount > undamageable + 100)
         {
           hitRock = false;
         }
-        
+
         return true;
       }
     } 
 
     return  false;
+  }
+  //returns the position of the ship to any calling function or class
+  PVector getPos() {
+    return location;
+  }
+
+  //returns the heading of the ship in radians to any calling function or class
+  float getAngle() {
+    return angle - HALF_PI;
+  }
+
+  //sets the direction PVector variable depending on which way the shipo is currently heading.
+  //direction is used in other places in this class and when creating the Laser objects
+  void setDirection() {
+    direction = PVector.fromAngle(angle - HALF_PI);
+  }
+
+  float getScore() {
+    return score;
+  }
+
+  int getDamage()
+  {
+    return damage;
+  }
+
+  void setScore(int points) {
+    score = score + points;
+  }
+
+  void addDamage(int dam) {
+    damage += dam;
   }
 }

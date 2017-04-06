@@ -4,6 +4,8 @@ adam
 3360
 ada
 2160
+  adam
+2040
 adam
 960
 adam
@@ -15,6 +17,4 @@ adam
 adam2
 440
 asd
-280
-a
 280
