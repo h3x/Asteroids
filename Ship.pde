@@ -1,3 +1,18 @@
+/***********************************************************************************************************
+ * Class:     Laser
+ *
+ * Authors:   Adam Austin
+ *
+ * Function:  Creates and controls ship (player) object
+ *             
+ * Imports:   None
+ *
+ * Methods:   display() - Draws the laser
+ *            move()    - Draws the laser in the new location
+ *            getPos()  - Getter - returns the position of the laser
+ *
+ ************************************************************************************************************/
+
 class Ship {
   PVector location;
   PVector velocity;
@@ -195,14 +210,6 @@ class Ship {
   }
 
   boolean crash() {
-    //stroke(255);
-    //strokeWeight(4);
-
-
-    //point(20 + location.x ,40 + location.y ); //bottom right
-    //point(-20 + location.x, 40 + location.y); //bottom left
-    //point(20 + location.x, - 40 + location.y); //top right
-    //point(-20 + location.x, -40 + location.y); //top left
 
     float tempX = -100;
     float tempY = -100;
@@ -254,14 +261,7 @@ class Ship {
         
         return true;
       }
-      
-    //LEAVE THIS HERE FOR THE VIDEO 
-    //fill(255,0,0);
-    //stroke(255, 0, 0);
-    //ellipse(tempX, tempY, 10, 10); 
-    }
-
-  
+    } 
 
     return  false;
   }

@@ -1,5 +1,5 @@
 /* 
-
+ 
  Asteroids  Game - Assignment One
  Authors:   Adam Austin
             Tahlia Disisto
@@ -19,6 +19,9 @@
  Sketch > Import Library > Add Library > Search for minim
  
  Credits:  
+ Ship and Asteroid Artworks used with permission
+ original content creator: Tahlia Disisto
+ 
  Background music used with permission.
  original content creator: FoxSynergy
  http://opengameart.org/content/blue-space
@@ -39,14 +42,6 @@ AudioPlayer mainTheme;
 AudioSample shootSound;
 AudioSample foomSound;
 AudioSample newLevel;
-
-
-
-
-
-
-
-
 
 Ship ship;                                   //create ship object
 Score score = new Score();                   //Create score object
@@ -70,16 +65,18 @@ int totalRocks;
 PImage backImg;                            //Background image object
 float steering = 0.1;                      //ship steering speed
 
+
 /***********************************************************************************************************
-* Method:     setup()
-* Authors:    Adam Austin
-*             Tahlia Disisto
-*             Scott Nicol
-* Function:   Program entry point.
-*             Setup for screen, class variables, sets up for levels, loads music and sound effects into memory
-* Parameters: None
-*
-************************************************************************************************************/
+ * Method:     setup()
+ * Authors:    Adam Austin
+ *             Tahlia Disisto
+ *             Scott Nicol
+ *
+ * Function:   Program entry point.
+ *             Setup for screen, class variables, sets up for levels, loads music and sound effects into memory
+ * Parameters: None
+ *
+ ************************************************************************************************************/
 
 void setup() {    
   rocks = new ArrayList<Rock>();
@@ -119,86 +116,122 @@ void setup() {
 }
 
 /***********************************************************************************************************
-* Method:     Draw()
-* Authors:    Adam Austin
-*             Tahlia Disisto
-*             Scott Nicol
-* Function:   Program game loop.
-*             
-* Parameters: None
-*
-************************************************************************************************************/
+ * Method:     Draw()
+ * Authors:    Adam Austin
+ *             Tahlia Disisto
+ *             Scott Nicol
+ *
+ * Function:   Program game loop.
+ *             
+ * Parameters: None
+ *
+ ************************************************************************************************************/
 void draw() {
+
   background(backImg);
-  //println(rocks.size());
-  if (gameOver == false) {
-    //limit laser rate of fire to once every 10 frames
-    if (laserFired == true && frameCount % 10 == 0) {
-      laserFired = false;
+
+  //limit laser rate of fire to once every 10 frames
+  if (laserFired == true && frameCount % 10 == 0) {
+    laserFired = false;
+  }
+
+  //lasers loop
+  for (int i = lasers.size() - 1; i >=0; i--) {
+    lasers.get(i).move();     //Move the lasers to the next position 
+    lasers.get(i).display();  //draw to screen
+  }
+  
+  // update the ships velocity and position
+  ship.update();
+
+  //Check if ship has crashed and if game is over
+  if (ship.crash()) {
+    if (ship.getDamage() == 100) {
+      gameOver = true;
     }
+  }
 
-    //lasers
-    for (int i = lasers.size() - 1; i >=0; i--) {
-      lasers.get(i).move();
-      lasers.get(i).display();
-    }
+  //Go to next level if all rocks destroyed
+  if (rocks.size() <= 0) {
+    levels.nextLevel(); //Go to next level
+    newLevel.trigger();
+    setup();
+  }
+  
+  // rocks loop. Loop runs backward due to how elements are removed from an array
+  for (int i = rocks.size() -1; i >= 0; i--) {
+    rocks.get(i).update(); //update the rocks position
+    rocks.get(i).display(); //draw to screen
 
-
-    ship.update();
-
-    //Check if ship has crashed and if game is over
-    if (ship.crash()) {
-      if (ship.getDamage() == 100) {
-        gameOver = true;
+    //ishit serves as a test var, if the rock is hit it will return a +ve number (or 0), and if the rock has not been hit by a laser, it will return -1
+    //it returns the level of the rock to be used in the next generation of rock creation
+    int isHit = rocks.get(i).hit();
+    if (isHit >= 0) {
+      score.addScore(40);
+      foomSound.trigger();
+      //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
+       if (isHit > 1) { 
+         addRocks(2, isHit - 1, rocks.get(i).getPos());
       }
+      rocks.remove(i);
     }
+  }
 
-    //Go to next level if all rocks destroyed
-    if (rocks.size() <= 0) {
-      levels.nextLevel(); //Go to next level
-      newLevel.trigger();
-      setup();
-    }
-
-    for (int i = rocks.size() -1; i >= 0; i--) {
-      rocks.get(i).update();
-
-      rocks.get(i).display();
-
-      //is hit servers as a test var, if the rock is hit it will return a +ve number (or 0), and if the rock has not been hit by a laser, it will return -1
-      //it returns the level of the rock to be used in the next generation of rock creation
-      int isHit = rocks.get(i).hit();
-      if (isHit >= 0) {
-        score.addScore(40);
-        foomSound.trigger();
-        if (isHit > 1) { //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
-          addRocks(2, isHit - 1, rocks.get(i).getPos());
-        }
-
-        rocks.remove(i);
-      }
-    }
-
-    ship.dispay();
-    ship.displayDamage();
-    score.displayScore();
-    levels.displayLevel();
-  } else {
-    if (highScoreAdded == false) {
-      highscore.addScore(score.getScore());
-      highScoreAdded = true;
-    }
+  ship.dispay(); //draw to screen
+  ship.displayDamage();
+  score.displayScore();
+  levels.displayLevel();
+  
+  //test for game over
+  if (gameOver && highScoreAdded == false) {
+    highscore.addScore(score.getScore());
+    highScoreAdded = true;
+  } else if (gameOver) {
     highscore.displayScores();
   }
 }
 
-void addRocks(int quant, int rLevel) {
+/***********************************************************************************************************
+ * Method:     addRocks()
+ * Authors:    Adam Austin
+ *             Tahlia Disisto
+ *             Scott Nicol
+ *
+ * Function:   Add more rocks to the game.
+ *             
+ * Parameters: quant - the amount of rocks to be added
+ *             rlevel -  the level of the rocks added. Used to determine size and speed
+ *
+ * Returns:    None
+ *
+ ************************************************************************************************************/
 
+void addRocks(int quant, int rLevel) {
+  
   for (int i = 0; i < quant; i++) {
-    rocks.add(new Rock(rLevel * 12, (int)random(width), (int)random(height), rLevel, lasers));
-    //println("new rock");
+    rocks.add(new Rock(rLevel * 12, (int)random(width), (int)random(height), rLevel, lasers)); // Call the Rock constructor
   }
+  
 }
+
+/***********************************************************************************************************
+ * Method:     addRocks()
+ * Authors:    Adam Austin
+ *             Tahlia Disisto
+ *             Scott Nicol
+ *
+ * Function:   Add more rocks to the game.
+ *             
+ * Parameters: quant   -  The amount of rocks to be added
+ *             rlevel  -  The level of the rocks added. Used to determine size and speed
+ *             deadPos -  The position of the rock thats just been destroyed
+ *
+ * Returns:    None
+ *
+ * Notes:      Overloaded method called when a rock has been destroyed, rather than starting a new level or 
+ *             entering the game
+ *
+ ************************************************************************************************************/
 void addRocks(int quant, int rLevel, PVector deadPos) {
 
   for (int i = 0; i < quant; i++) {
@@ -207,33 +240,47 @@ void addRocks(int quant, int rLevel, PVector deadPos) {
   }
 }
 
-
+/***********************************************************************************************************
+ * Method:     keyPressed()
+ *
+ * Authors:    Adam Austin
+ *             Tahlia Disisto
+ *             Scott Nicol
+ *
+ * Function:   Detect and act on keyboard input.
+ *             
+ * Parameters: None
+ *
+ * Returns:    None
+ *
+ * Notes:      Built in function
+ *
+ ************************************************************************************************************/
 void keyPressed() {
-  if (keyCode == UP && gameOver == false) {
+  // Key press up for acceleration
+  if (keyCode == UP && !gameOver) {
     ship.go(true);
   }
-
-  if (keyCode == RIGHT && gameOver == false) {
+  
+  // Key press right for steering
+  if (keyCode == RIGHT && !gameOver) {
     ship.steering(steering);
   }
 
-  if (keyCode == LEFT && gameOver == false) {
-
+  // Key press left for steering
+  if (keyCode == LEFT && !gameOver) {
     ship.steering(steering * -1);
   }
 
-  //spacebar ascii code is 32
-  if (keyCode == 32 && gameOver == false) {
-    //fire lasers if laser is not already fired
-    if (laserFired == false) {
-      //pew pew
-      shootSound.trigger();
-      //make new laser at ship position, heading in direction ship is facing
-      lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
-
-      //set laser to fired
-      laserFired = true;
-    }
+  ////fire lasers if laser is not already fired. note: spacebar ascii code is 32
+  if (keyCode == 32 && !gameOver && !laserFired) {
+    
+    shootSound.trigger(); //pew pew
+    
+    //make new laser at ship position, heading in the direction ship is facing
+    lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
+    laserFired = true; //set laser to fired
+  
   }
 
   //if 'q' key is pressed to quit to high scores screen
@@ -251,7 +298,24 @@ void keyPressed() {
   }
 }
 
+/***********************************************************************************************************
+ * Method:     keyReleased()
+ * Authors:    Adam Austin
+ *             Tahlia Disisto
+ *             Scott Nicol
+ *
+ * Function:   Detect and act on keyboard input.
+ *             
+ * Parameters: None
+ *
+ * Returns:    None
+ * 
+ * Notes:      Built in function.
+ *             Stops the action on the key being released
+ *
+ ************************************************************************************************************/
 void keyReleased() {
+
   if (keyCode == UP) {
     ship.go(false);
   }
@@ -261,7 +325,6 @@ void keyReleased() {
   }
 
   if (keyCode == RIGHT) {
-
     ship.steering(0);
   }
 }
