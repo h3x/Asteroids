@@ -71,6 +71,7 @@ class Rock {
  * Method:     make()
  *
  * Authors:    Adam Austin
+ *             Tahlia Disisto
  *
  * Function:   Draw rock object to the screen
  *             
@@ -101,16 +102,12 @@ class Rock {
  * Authors:    Tahlia Disisto
  *
  * Function:   Alias for make in the case that multiply creation methods are used in future 
- *             o keep consistancy and provide out of class saftey 
+ *             to keep consistancy and provide out of class saftey 
  *             
  * Parameters: None
  *
  * Returns:    None
  *
- * Notes:      push and pop matrix functions are necassary due to translating the object around the screen.
- *             the image is always drawn at (0,0), and is the translate to the x and y position that really controlls
- *             the moving around of the object. Without push and pop, all other translations occur _relative_ to each other
- *             creating a hot, sticky mess. Same goes for the rotation method.
  * 
  ************************************************************************************************************/  
   

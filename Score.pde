@@ -81,6 +81,7 @@ class Score
   * Notes:      Formats and displays the player's score to the screen
   *
   ************************************************************************************************************/
+  
   public void displayScore()
   {
     textSize(32);
