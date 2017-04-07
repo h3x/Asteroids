@@ -3,11 +3,14 @@
  *
  * Authors:   Scott Nicol
  *
- * Function:   
+ * Function:  Creates the high scores object 
  *             
  * Imports:   javax.swing.*
  *
- * Methods:      
+ * Methods:   addScore() - Submits a high score be checked for admission to the high scores list
+ *            loadScores() - Loads the saved high scores from the data/highscores.txt file
+ *            saveScores() - Saves the updated high scores list to data/highscores.txt file
+ *            displayScores() - Displays the high scores list to the screen
  *
  ************************************************************************************************************/
 
@@ -18,11 +21,13 @@ class HighScores {
   int[] scores = new int[10];
   String name;
   
+  //Initialise high score list
   public HighScores()
   {
     loadScores();
   }
   
+  //Submit a high score for checking
   public void addScore(int score)
   {    
     for(int i = 0; i < scores.length; i++)
@@ -39,7 +44,7 @@ class HighScores {
           name = JOptionPane.showInputDialog(frame, "Please input your name:", "Congratulations! You made a high score!", JOptionPane.INFORMATION_MESSAGE);
         }
         scores[i] = score;
-        names[i] = name;
+        names[i] = name.trim();
         break;
       }
     }
@@ -47,6 +52,7 @@ class HighScores {
     saveScores();
   }
   
+  //Load the scores from text file
   private void loadScores()
   {
     String lines[] = loadStrings("data/highscores.txt");
@@ -58,6 +64,7 @@ class HighScores {
     }
   }
   
+  //Save the scores to text file
   private void saveScores()
   {
     String[] lines = new String[20];
@@ -72,6 +79,7 @@ class HighScores {
     saveStrings("data/highscores.txt", lines);
   }
   
+  //Display the high scores list to screen
   public void displayScores()
   {
     textSize(30);
