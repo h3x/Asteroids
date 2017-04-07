@@ -18,25 +18,69 @@ class Score
 {
   int score = 0;
   
-  //Adds to the player's score
+  /***********************************************************************************************************
+  * Method:     addScore()
+  *
+  * Authors:    Scott Nicol
+  *
+  * Function:   Increments the player's score
+  *             
+  * Parameters: int s
+  *
+  * Notes:      Increments the player's score by the value specified in the parameter
+  *
+  ************************************************************************************************************/
   public void addScore(int s)
   {
     score += s;  
   }
   
-  //setScore() - Sets the player's score
+  /***********************************************************************************************************
+  * Method:     setScore()
+  *
+  * Authors:    Scott Nicol
+  *
+  * Function:   Sets the player's score
+  *             
+  * Parameters: int s
+  *
+  * Notes:      Set the player's score to the value specified in the parameter
+  *
+  ************************************************************************************************************/
   public void setScore(int s)
   {
     score = s;  
   }
   
-  //Gets the player's score
+  /***********************************************************************************************************
+  * Method:     getScore()
+  *
+  * Authors:    Scott Nicol
+  *
+  * Function:   Gets the player's score
+  *             
+  * Parameters: None
+  *
+  * Notes:      Returns the score variable which is the player's score
+  *
+  ************************************************************************************************************/
   public int getScore()
   {
     return score;  
   }
   
-  //Displays the player's score
+  /***********************************************************************************************************
+  * Method:     displayScore()
+  *
+  * Authors:    Scott Nicol
+  *
+  * Function:   Displays the player's score
+  *             
+  * Parameters: None
+  *
+  * Notes:      Formats and displays the player's score to the screen
+  *
+  ************************************************************************************************************/
   public void displayScore()
   {
     textSize(32);
