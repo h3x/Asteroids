@@ -21,13 +21,36 @@ class HighScores {
   int[] scores = new int[10];
   String name;
   
-  //Initialise high score list
+  /***********************************************************************************************************
+ * Method:     Constructor
+ *
+ * Authors:    Scott Nicol
+ *
+ * Function:   Create a new high scores object
+ *             
+ * Parameters: None
+ *
+ * Notes:      Loads the saved high scores from data/highscores.txt upon creation
+ *
+ ************************************************************************************************************/
   public HighScores()
   {
     loadScores();
   }
   
-  //Submit a high score for checking
+   /***********************************************************************************************************
+ * Method:     addScore()
+ *
+ * Authors:    Scott Nicol
+ *
+ * Function:   Create a new high scores object
+ *             
+ * Parameters: int score
+ *
+ * Notes:      Submits a score to be checked by an algorithm to determine if it should be added to the high
+ *             scores list.
+ *
+ ************************************************************************************************************/
   public void addScore(int score)
   {    
     for(int i = 0; i < scores.length; i++)
@@ -52,7 +75,18 @@ class HighScores {
     saveScores();
   }
   
-  //Load the scores from text file
+   /***********************************************************************************************************
+ * Method:     loadScores()
+ *
+ * Authors:    Scott Nicol
+ *
+ * Function:   Loads the saved high scores from the text file
+ *             
+ * Parameters: None
+ *
+ * Notes:      Loads the saved high scores from the data/highscores.txt file and then stores them in an array.
+ *
+ ************************************************************************************************************/
   private void loadScores()
   {
     String lines[] = loadStrings("data/highscores.txt");
@@ -64,7 +98,18 @@ class HighScores {
     }
   }
   
-  //Save the scores to text file
+    /***********************************************************************************************************
+ * Method:     saveScores()
+ *
+ * Authors:    Scott Nicol
+ *
+ * Function:   Saves the updated high scores to text file
+ *             
+ * Parameters: None
+ *
+ * Notes:      Takes the updated high scores from an the array and then saves them data/highscores.txt.
+ *
+ ************************************************************************************************************/
   private void saveScores()
   {
     String[] lines = new String[20];
@@ -79,7 +124,18 @@ class HighScores {
     saveStrings("data/highscores.txt", lines);
   }
   
-  //Display the high scores list to screen
+     /***********************************************************************************************************
+ * Method:     displayScores()
+ *
+ * Authors:    Scott Nicol
+ *
+ * Function:   Displays the high scores to the screen
+ *             
+ * Parameters: None
+ *
+ * Notes:      Displays the high scores to the screen with formatting.
+ *
+ ************************************************************************************************************/
   public void displayScores()
   {
     textSize(30);
