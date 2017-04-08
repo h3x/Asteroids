@@ -34,7 +34,6 @@ class Ship {
 
     this.rocks = rocks;
 
-
     goingUp = false;
     rotating = false;
 
@@ -201,32 +200,27 @@ class Ship {
   }
 
   boolean crash() {
-    //stroke(255);
-    //strokeWeight(4);
 
-
-    //point(20 + location.x ,40 + location.y ); //bottom right
-    //point(-20 + location.x, 40 + location.y); //bottom left
-    //point(20 + location.x, - 40 + location.y); //top right
-    //point(-20 + location.x, -40 + location.y); //top left
 
     float tempX = -100;
     float tempY = -100;
     
-
+      ///for each asteroid on screen..
     for (int i = rocks.size() -1; i >= 0; i--) {
       PVector rockPos = rocks.get(i).getPos();
       float rockRad = rocks.get(i).getRadius();
 
-
+ //check if the asteroid x coord is within the hit box's x range (is to the left of the right side, and right of the left side)
       if (rockPos.x > location.x - 20 && rockPos.x < location.x + 20) {
+                //assign tempX to the center x co-ord of the asteroid
         tempX = rockPos.x;
-      } else if (rockPos.x < location.x -20) {
+      } else if (rockPos.x < location.x -20) { // or check if the asteroid center is left of the left edge
         tempX = location.x - 20;
       } else {
-        tempX = location.x + 20;
+        tempX = location.x + 20; //so it must be to the right of the right edge
       }      
 
+       //do the same algorithm fo the y co-ords
       if (rockPos.y > location.y -40 && rockPos.y < location.y + 40) {
         tempY = rockPos.y;
       } else if (rockPos.y < location.y -40) {
@@ -235,7 +229,9 @@ class Ship {
         tempY = location.y + 40;
 
       }
+         // let d be the pythogorised distance from the closest edge of the hitbox, to the center of the asteroid
       float d = sqrt(sq(tempX - rockPos.x) + sq(tempY - rockPos.y));
+      // if that distance is less than the radius of the asteroid, we have collided
       if (d < rockRad) {
         
         //Destroy rocks if ship hits them
@@ -265,14 +261,17 @@ class Ship {
       
     if(isDebug){
       strokeWeight(2);
+      noFill();
+      rect(location.x - 20, location.y - 40, 40, 80); 
+      
       fill(255,0,0);
       stroke(255, 0, 0);
-      ellipse(tempX, tempY, 5, 5); 
+      ellipse(tempX, tempY, 7, 7); 
+      
       stroke(0,255,0);
       line(tempX, tempY, rockPos.x, rockPos.y);
       stroke(0,0,255);
-      noFill();
-      rect(location.x - 20, location.y - 40, 40, 80); 
+
     }  
   }
 
