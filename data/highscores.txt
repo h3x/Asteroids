@@ -10,11 +10,11 @@ adam
 960
 adam
 640
+adam
+640
 ada,m
 520
 adam
 480
 adam2
 440
-asd
-280
