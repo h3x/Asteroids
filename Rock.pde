@@ -1,5 +1,8 @@
 class Rock {
   
+  boolean isDebug = false;
+  
+  
   float radius;
   int rockLevel;
   PVector location;
@@ -37,10 +40,13 @@ class Rock {
     rockImg.resize(((int)radius + 10) * 2, ((int)radius + 10) * 2);
     image(rockImg, 0,0); 
     popMatrix();
-    //fill(100);
-    //noFill();
-    //stroke(255,0,0);
-    //ellipse(location.x, location.y, radius * 2, radius * 2);
+    if( isDebug){
+     // fill(100);
+      noFill();
+      strokeWeight(2);
+      stroke(255,0,0);
+      ellipse(location.x, location.y, radius * 2, radius * 2);
+    }
   }
   void display() {
     make();  // draw our asteroid
@@ -90,5 +96,9 @@ class Rock {
 
   int getRockLevel() {
     return rockLevel;
+  }
+  
+  void setDebug(boolean state){
+    isDebug = state;
   }
 }

@@ -40,7 +40,10 @@ AudioSample shootSound;
 AudioSample foomSound;
 AudioSample newLevel;
 
-
+//Debug
+boolean isSound = true;
+boolean isDebug = false;
+boolean pause = false;
 
 
 
@@ -107,7 +110,7 @@ void setup() {
   newLevel =  minim.loadSample("newLevel.wav");  
 
   // If music is playing, dont start it again
-  if (!music) {
+  if (!music && isSound) {
     mainTheme.loop();
     music = true;
   }
@@ -156,13 +159,17 @@ void draw() {
     //Go to next level if all rocks destroyed
     if (rocks.size() <= 0) {
       levels.nextLevel(); //Go to next level
-      newLevel.trigger();
+      if(isSound){
+        newLevel.trigger();
+      }
       setup();
     }
 
     for (int i = rocks.size() -1; i >= 0; i--) {
-      rocks.get(i).update();
-
+      if(!pause){
+        rocks.get(i).update();
+      }
+      rocks.get(i).setDebug(isDebug);
       rocks.get(i).display();
 
       //is hit servers as a test var, if the rock is hit it will return a +ve number (or 0), and if the rock has not been hit by a laser, it will return -1
@@ -170,7 +177,9 @@ void draw() {
       int isHit = rocks.get(i).hit();
       if (isHit >= 0) {
         score.addScore(40);
-        foomSound.trigger();
+        if( isSound){
+          foomSound.trigger();
+        }
         if (isHit > 1) { //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
           addRocks(2, isHit - 1, rocks.get(i).getPos());
         }
@@ -209,6 +218,42 @@ void addRocks(int quant, int rLevel, PVector deadPos) {
 
 
 void keyPressed() {
+  //debug
+  
+  switch(keyCode){
+   case 115:
+   case 83:
+     isSound = !isSound;
+     ship.setSound();
+     println("sound: " + isSound);
+     if(isSound){
+      mainTheme.unmute();      
+     }
+     else{
+       mainTheme.mute();
+     }
+     break;
+     
+   case 100:
+   case 68:
+      isDebug = !isDebug;
+      ship.setDebug(isDebug);
+      println("Debug: " + isDebug);
+      break;
+   
+   case 112:
+   case 80:
+     pause = !pause;
+     println("Pause: " + pause);
+   
+  }
+  
+  
+  
+  
+  
+  //end debug
+  
   if (keyCode == UP && gameOver == false) {
     ship.go(true);
   }
@@ -227,7 +272,9 @@ void keyPressed() {
     //fire lasers if laser is not already fired
     if (laserFired == false) {
       //pew pew
-      shootSound.trigger();
+      if( isSound){
+        shootSound.trigger();
+      }
       //make new laser at ship position, heading in direction ship is facing
       lasers.add(new Laser(ship.getPos().x, ship.getPos().y, ship.getAngle()));
 

@@ -1,4 +1,10 @@
 class Ship {
+  
+  //debug
+  boolean isSound = true;
+  boolean isDebug = false;
+  
+  
   PVector location;
   PVector velocity;
   PVector acceleration;
@@ -236,7 +242,9 @@ class Ship {
         if(hitRock == false)
         {
           addDamage(20);
-          foomSound.trigger();
+          if(isSound){
+            foomSound.trigger();
+          }
           if (rocks.get(i).getRockLevel() > 1) { //level 1 is the lowest level of rocks. this avoids all sorts of nasty problems, some of which are * by 0 issues that plauge movement and col/detection
             addRocks(2, rocks.get(i).getRockLevel() - 1, rocks.get(i).getPos());
           }
@@ -255,14 +263,31 @@ class Ship {
         return true;
       }
       
-    //LEAVE THIS HERE FOR THE VIDEO 
-    //fill(255,0,0);
-    //stroke(255, 0, 0);
-    //ellipse(tempX, tempY, 10, 10); 
-    }
+    if(isDebug){
+      strokeWeight(2);
+      fill(255,0,0);
+      stroke(255, 0, 0);
+      ellipse(tempX, tempY, 5, 5); 
+      stroke(0,255,0);
+      line(tempX, tempY, rockPos.x, rockPos.y);
+      stroke(0,0,255);
+      noFill();
+      rect(location.x - 20, location.y - 40, 40, 80); 
+    }  
+  }
 
   
 
     return  false;
   }
+  
+  //debug options
+  void setSound(){
+    isSound = !isSound;
+  }
+  
+  void setDebug(boolean state){
+   isDebug = state; 
+  }
+  
 }

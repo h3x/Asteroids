@@ -6,6 +6,8 @@ adam
 960
 adam
 640
+adam
+560
 ada,m
 520
 adam
@@ -16,5 +18,3 @@ asd
 280
 a
 280
-adam
-200
